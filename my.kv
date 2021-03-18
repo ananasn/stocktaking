@@ -1,0 +1,47 @@
+#:import TextInput kivy.uix.textinput.TextInput
+#:import XCamera kivy_garden.xcamera.XCamera
+
+ScreenManager:
+    id: screen_manager
+    Screen:
+        manager: "screen_manager"
+        name: "main"
+        GridLayout:
+            cols:2
+            Label:
+                text: "Название"
+            TextInput:
+                id: name
+                multiline: False
+            Label:
+                text: "Описание"
+            TextInput:
+                id: description
+                multiline: True
+            Label:
+                text:"Место хранения"
+            TextInput:
+                id: place
+                multiline: False
+            Label:
+                text:"Количество"
+            TextInput:
+                id: amount
+                input_filter: "int"
+                multiline: False
+            Button:
+                text:"Отправить"
+                on_press: app.print_str([ w.text for w in root.walk() if type(w) is TextInput])
+            Button:
+                text: "Фото"
+                on_press: app.root.current = "camera_screen"
+    Screen:
+        manager: "screen_manager"
+        name: "camera_screen"
+        BoxLayout:
+            id: camera_click
+            orientation: "vertical"
+            MyXCamera:
+                id: xcamera
+                play: True
+                on_picture_taken: app.root.current = "main"
